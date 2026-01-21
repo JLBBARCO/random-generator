@@ -1,2 +1,4 @@
 build/
+__pycache__/
+*.pyc
 random_generator.spec
