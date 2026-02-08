@@ -1,14 +1,16 @@
-import customtkinter as ctk
 import random
+import customtkinter as ctk
 
 padMain = 10
-# Module-level storage so callers can read `randomNumbers.numbers` after calling
+
+# Armazenamento em nível de módulo para que chamadores possam ler `randomNumbers.numbers`
 numbers = []
 
 def randomNumbers(quantity, min_num=0, max_num=100):
-    """Generate `quantity` random integers between min_num and max_num.
-    The generated list is stored on the function object as `randomNumbers.numbers`
-    and also in the module-level `numbers` variable to keep backward compatibility.
+    """Gera `quantity` inteiros aleatórios entre min_num e max_num.
+    A lista gerada é armazenada na variável de módulo `numbers` e também
+    como atributo da função `randomNumbers.numbers` (compatibilidade).
+    Retorna a lista gerada.
     """
     global numbers
     try:
@@ -19,9 +21,9 @@ def randomNumbers(quantity, min_num=0, max_num=100):
     if qty < 1:
         numbers = []
         randomNumbers.numbers = numbers
-        return
+        return numbers
 
-    # ensure min < max
+    # garante que min < max
     try:
         min_v = int(min_num)
         max_v = int(max_num)
@@ -38,21 +40,20 @@ def randomNumbers(quantity, min_num=0, max_num=100):
 
     numbers = gen
     randomNumbers.numbers = numbers
-    return
+    return numbers
 
-class randomNumbers(ctk.CTkToplevel):
+class RandomNumbersDialog(ctk.CTkToplevel):
+    """Janela opcional para geração de números (não usada pelo main.py por padrão).
+    Implementação mínima funcional: lê entradas, chama `randomNumbers` e fecha.
+    """
     def __init__(self):
         super().__init__()
         self.title('Random Numbers')
         self.resizable(False, False)
-        self.geometry('400x350')
-
-        self.quantityNumbers = None
-        self.minNumber = None
-        self.maxNumber = None
+        self.geometry('400x250')
 
         # Create main frame
-        self.main_frame = ctk.CTkFrame(self, width=380, height=330)
+        self.main_frame = ctk.CTkFrame(self, width=380, height=230)
         self.main_frame.pack(padx=10, pady=10, fill='both', expand=True)
 
         # Title
@@ -68,7 +69,7 @@ class randomNumbers(ctk.CTkToplevel):
 
         # Frame for buttons
         button_frame = ctk.CTkFrame(self.main_frame)
-        button_frame.pack(padx=padMain, pady=20)
+        button_frame.pack(padx=padMain, pady=10)
 
         self.submitButton = ctk.CTkButton(button_frame, text='Submit', command=self.submit, width=100)
         self.submitButton.pack(side='left', padx=5)
@@ -76,26 +77,22 @@ class randomNumbers(ctk.CTkToplevel):
         self.cancelButton = ctk.CTkButton(button_frame, text='Cancel', command=self.destroy, width=100)
         self.cancelButton.pack(side='left', padx=5)
 
-        numbers = list()
-        if self.quantityNumbers < 1:
-            pass
-        elif self.minNumber < self.maxNumber:
-            pass
-        else:
-            for c in range(self.quantityNumbers):
-                value = random.randint(self.minNumber, self.maxNumber)
-                if value not in numbers:
-                    numbers.append(value)
-
     def submit(self):
-        if hasattr(self, 'addressEntry'):
-            self.address = self.addressEntry.get()
-        if hasattr(self, 'userEntry'):
-            self.user = self.userEntry.get()
-        if hasattr(self, 'passwordEntry'):
-            self.password = self.passwordEntry.get()
-        elif self.generated_password:
-            self.password = self.generated_password
-        if hasattr(self, 'charactersEntry'):
-            self.characters = self.charactersEntry.get()
+        """Lê os valores dos campos, chama a função de geração e fecha a janela."""
+        try:
+            qty = int(self.inputQuantity.get())
+        except (TypeError, ValueError):
+            qty = 0
+
+        try:
+            min_v = int(self.inputMinNumbers.get())
+        except (TypeError, ValueError):
+            min_v = 0
+
+        try:
+            max_v = int(self.inputMaxNumbers.get())
+        except (TypeError, ValueError):
+            max_v = 100
+
+        randomNumbers(qty, min_v, max_v)
         self.destroy()

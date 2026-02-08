@@ -2,6 +2,6 @@
 
 This program is a generate random names and draws random numbers.
 
-It's used a CustomTKinter lib for layout.
+It's used a CustomTKinter lib for layout and faker lib for some functions.
 
-[Program .exe](https://github.com/JLBBARCO/random_generator/blob/main/dist/program.exe)
+[Download](https://github.com/JLBBARCO/random-generator/releases)

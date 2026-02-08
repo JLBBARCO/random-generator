@@ -1,11 +1,12 @@
 from faker import Faker
 
-# Module-level storage so callers can read `randomNames.names` after calling
+# Armazenamento em nível de módulo para que chamadores possam ler `randomNames.names`
 names = []
 
 def randomNames(quantity):
-    """Generate `quantity` random names using Faker and store them on the
-    function object as `randomNames.names` and in the module-level `names`.
+    """Gera `quantity` nomes aleatórios usando Faker e armazena em
+    `randomNames.names` e na variável de módulo `names`.
+    Retorna a lista gerada.
     """
     global names
     try:
@@ -19,5 +20,6 @@ def randomNames(quantity):
         generated.append((i, fake.name()))
 
     names = generated
+    # Também expõe no objeto função para compatibilidade
     randomNames.names = names
-    return
+    return names

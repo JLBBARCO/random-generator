@@ -1,0 +1,1 @@
+python -m PyInstaller --onefile --noconsole --icon=src/assets/icon/random-generator.ico main.py

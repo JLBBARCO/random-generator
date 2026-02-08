@@ -1,6 +1,6 @@
-build/
-dist/
+.vscode/
 __pycache__/
 *.pyc
-random_generator.spec
-.vscode/
+build/
+dist/
+*.spec
